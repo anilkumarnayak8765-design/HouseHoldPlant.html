@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenLeaf Houseplants</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 1.5rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Landing Page */
+        .landing {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%234CAF50" width="1200" height="800"/><circle fill="%2323A323" cx="300" cy="200" r="150"/><circle fill="%231E7E1E" cx="900" cy="500" r="120"/><circle fill="%231A5F1A" cx="600" cy="300" r="100"/><path fill="%2323A323" d="M400 400 Q500 350 600 400 T800 400"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .landing h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .landing p {
+            font-size: 1.3rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .get-started-btn {
+            background: #FF6B35;
+            color: white;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.4);
+        }
+
+        .get-started-btn:hover {
+            background: #E55A2B;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.6);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Page Sections */
+        .page {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Products Page */
+        .products-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .products-header h2 {
+            font-size: 2.5rem;
+            color: #2E7D32;
+            margin-bottom: 1rem;
+        }
+
+        .categories {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            justify-content: center;
+        }
+
+        .category {
+            background: #E8F5E8;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 500;
+            color: #2E7D32;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .product-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2E7D32;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: #FF6B35;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .add-to-cart-btn:hover:not(:disabled) {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .add-to-cart-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Cart Page */
+        .cart-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .cart-header h2 {
+            font-size: 2.5rem;
+            color: #2E7D32;
+        }
+
+        .cart-summary {
+            background: #F1F8E9;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .cart-total {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2E7D32;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .cart-item {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2E7D32;
+            margin-bottom: 0.3rem;
+        }
+
+        .cart-item-price {
+            color: #FF6B35;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #E8F5E8;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn:hover {
+            background: #4CAF50;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .quantity-btn:disabled {
+            background: #ccc;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quantity {
+            font-weight: bold;
+            min-width: 25px;
+            text-align: center;
+        }
+
+        .delete-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #d32f2f;
+            transform: translateY(-1px);
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #45a049;
+        }
+
+        .btn-secondary {
+            background: #FF6B35;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #E55A2B;
+        }
+
+        .btn-checkout {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-checkout:hover {
+            background: #1976D2;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-cart img {
+            width: 200px;
+            height: 200px;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .landing h1 {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .cart-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">🌿 GreenLeaf</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('landing')">Home</a></li>
+                <li><a href="#" onclick="showPage('products')">Products</a></li>
+                <li>
+                    <a href="#" onclick="showPage('cart')" class="cart-icon">
+                        🛒 
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Landing Page -->
+        <section id="landing" class="page landing active">
+            <h1>GreenLeaf Houseplants</h1>
+            <p>
+                Welcome to GreenLeaf Houseplants, your premier destination for premium indoor plants. 
+                We handpick the finest houseplants to bring nature's beauty into your home. 
+                From low-light tolerant varieties to exotic flowering plants, we have something perfect for every space.
+            </p>
+            <a href="#" class="get-started-btn" onclick="showPage('products')">Get Started</a>
+        </section>
+
+        <!-- Products Page -->
+        <section id="products" class="page">
+            <div class="products-header">
+                <h2>Our Houseplants</h2>
+                <div class="categories">
+                    <span class="category">Low Light</span>
+                    <span class="category">Flowering</span>
+                    <span class="category">Succulents</span>
+                </div>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be populated by JS -->
+            </div>
+        </section>
+
+        <!-- Cart Page -->
+        <section id="cart" class="page">
+            <div class="cart-header">
+                <h2>🛒 Shopping Cart</h2>
+            </div>
+            <div class="cart-summary">
+                <div>Total Items: <span id="cartTotalItems">0</span></div>
+                <div class="cart-total">Total: $<span id="cartTotalPrice">0.00</span></div>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <!-- Cart items will be populated by JS -->
+            </div>
+            <div class="cart-actions" id="cartActions">
+                <!-- Cart actions will be populated by JS -->
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Plant data - 6 unique houseplants in 3 categories
+        const plants = [
+            {
+                id: 1,
+                name: "Snake Plant",
+                price: 19.99,
+                category: "Low Light",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='%234CAF50' width='200' height='200' rx='20'/><path fill='%2323A323' d='M80 20 Q100 10 120 20 V180 Q100 190 80 180 Z M60 50 Q80 40 100 50 V150 Q80 160 60 150 Z'/><circle fill='%231E7E1E' cx='100' cy='30' r='15'/></svg>"
+            },
+            {
+                id: 2,
+                name: "ZZ Plant",
+                price: 24.99,
+                category: "Low Light",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='%234CAF50' width='200' height='200' rx='20'/><ellipse fill='%2323A323' cx='100' cy='80' rx='40' ry='60'/><ellipse fill='%231E7E1E' cx='100' cy='40' rx='25' ry='15'/></svg>"
+            },
+            {
+                id: 3,
+                name: "Peace Lily",
+                price: 29.99,
+                category: "Flowering",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='%234CAF50' width='200' height='200' rx='20'/><path fill='white' d='M60 60 Q100 30 140 60 V120 Q100 150 60 120 Z'/><circle fill='%23FFD700' cx='100' cy='80' r='25'/></svg>"
+            },
+            {
+                id: 4,
+                name: "Anthurium",
+                price: 34.99,
+                category: "Flowering",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='%234CAF50' width='200' height='200' rx='20'/><path fill='%23FF69B4' d='M70 50 Q100 20 130 50 V130 Q100 160 70 130 Z'/><path fill='%2323A323' d='M80 70 L100 90 L120 70 Z'/></svg>"
+            },
+            {
+                id: 5,
+                name: "Echeveria",
+                price: 14.99,
+                category: "Succulents",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='%23F4A261' width='200' height='200' rx='20'/><circle fill='%23E76F51' cx='100' cy='80' r='45'/><circle fill='%23F4A261' cx='100' cy='60' r='30'/><circle fill='%23E76F51' cx='100' cy='110' r='25'/></svg>"
+            },
+            {
+                id: 6,
+                name: "Jade Plant",
+                price: 22.99,
+                category: "Succulents",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='%23F4A261' width='200' height='200' rx='20'/><ellipse fill='%23E76F51' cx='100' cy='90' rx='35' ry='50'/><ellipse fill='%23F4A261' cx='100' cy='50' rx='25' ry='20'/></svg>"
+            }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+        // Initialize app
+        function init() {
+            renderProducts();
+            updateCartDisplay();
+            showPage('landing');
+        }
+
+        // Show specific page
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            if (pageId === 'products') {
+                renderProducts();
+            } else if (pageId === 'cart') {
+                renderCart();
+            }
+        }
+
+        // Render products
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = plants.map(plant => `
+                <div class="product-card">
+                    <img src="${plant.image}" alt="${plant.name}" class="product-image">
+                    <h3 class="product-name">${plant.name}</h3>
+                    <div class="product-price">$${plant.price.toFixed(2)}</div>
+                    <button class="add-to-cart-btn" onclick="addToCart(${plant.id})"
+                        ${cart[plant.id] ? 'disabled' : ''}>
+                        ${cart[plant.id] ? 'Added!' : 'Add to Cart'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Add to cart
+        function addToCart(plantId) {
+            const plant = plants.find(p => p.id === plantId);
+            if (!cart[plantId]) {
+                cart[plantId] = { ...plant, quantity: 1 };
+            } else {
+                cart[plantId].quantity += 1;
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            renderProducts(); // Re-render to update button states
+        }
+
+        // Update cart display (header + summary)
+        function updateCartDisplay() {
+            const totalQuantity = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            document.getElementById('cartCount').textContent = totalQuantity;
+            document.getElementById('cartTotalItems').textContent = totalQuantity;
+            document.getElementById('cartTotalPrice').textContent = totalPrice.toFixed(2);
+        }
+
+        // Render cart page
+        function renderCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartActions = document.getElementById('cartActions');
+            
+            if (Object.keys(cart).length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <div style="font-size: 4rem;">🛒</div>
+                        <h3>Your cart is empty</h3>
+                        <p>Add some beautiful houseplants to get started!</p>
+                    </div>
+                `;
+                cartActions.innerHTML = `
+                    <a href="#" class="btn btn-primary" onclick="showPage('products')">Continue Shopping</a>
+                `;
+            } else {
+                cartItems.innerHTML = Object.values(cart).map(item => `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                        <div class="cart-item-details">
+                            <h3 class="cart-item-name">${item.name}</h3>
+                            <div class="cart-item-price">$${item.price.toFixed(2)} each</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)">−</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                        </div>
+                        <button class="delete-btn" onclick="removeItem(${item.id})">Remove</button>
+                    </div>
+                `).join('');
+
+                cartActions.innerHTML = `
+                    <button class="btn btn-checkout" onclick="checkout()">Checkout (Coming Soon)</button>
+                    <a href="#" class="btn btn-secondary" onclick="showPage('products')">Continue Shopping</a>
+                `;
+            }
+            updateCartDisplay();
+        }
+
+        // Change quantity
+        function changeQuantity(plantId, delta) {
+            if (cart[plantId]) {
+                cart[plantId].quantity += delta;
+                if (cart[plantId].quantity <= 0) {
+                    delete cart[plantId];
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartDisplay();
+                renderCart();
+                if (document.getElementById('products').classList.contains('active')) {
+                    renderProducts();
+                }
+            }
+        }
+
+        // Remove item
+        function removeItem(plantId) {
+            delete cart[plantId];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            renderCart();
+            renderProducts();
+        }
+
+        // Checkout
+        function checkout() {
+            alert('Checkout feature coming soon! 😊');
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
